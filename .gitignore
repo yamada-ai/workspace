@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.env
+.venv/
+env/
+venv/
+dist/
+build/
+*.sqlite3
+
+# Node / frontend
+node_modules/
+dist/
+build/
+*.log
+.env.local
+.env.development
+.env.production
+
+# Docker / VSCode
+*.pid
+*.seed
+*.db
+docker-compose.override.yml
+**/.DS_Store
+**/.vscode/
+**/.idea/
+**/.devcontainer/
+
+# Python virtualenv markers
+Pipfile.lock
+poetry.lock
+
+# OS
+Thumbs.db
+.DS_Store
+
+# VSCode remote containers
+.devcontainer.json
+
+# Postgres volume (just in case)
+db-data/
+
+# Nginx cache or temp files
+nginx/cache/
+nginx/temp/
+
+# Optional: log files
+*.log
+
+# Optional: coverage/test output
+htmlcov/
+.coverage
+.tox/
+pytest_cache/
+
+
+infrastructure/certs/*.pem

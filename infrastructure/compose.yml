@@ -1,0 +1,52 @@
+version: "3.9"
+services:
+  twitch-bot:
+    build: ../services/twitch-bot
+    env_file: ../services/twitch-bot/.env
+    depends_on:
+      - work-tracker
+
+  discord-bot:
+    build: ../services/discord-bot
+    env_file: ../services/discord-bot/.env
+    depends_on:
+      - work-tracker
+
+  work-tracker:
+    build: ../services/work-tracker
+    expose:
+      - "8000"
+    env_file: ../services/work-tracker/.env
+    depends_on:
+      - db
+
+  frontend:
+    build: ../frontend
+    expose:
+      - "80"
+    depends_on:
+      - work-tracker
+  
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+      - "443:443" 
+    volumes:
+      - ../infrastructure/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../infrastructure/certs:/etc/nginx/certs:ro
+    depends_on:
+      - frontend
+      - work-tracker
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: workspace
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:

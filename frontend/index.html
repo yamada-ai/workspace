@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>WorkSpace Dashboard</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; }
+    .event { margin-bottom: .5rem; }
+  </style>
+</head>
+<body>
+  <h1>WorkSpace</h1>
+  <div id="events"></div>
+
+  <script>
+    const API_URL = '/api';
+  
+    async function refresh() {
+      try {
+        const res = await fetch(`${API_URL}/work-events`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const events = await res.json();           // ← “events” に変更
+        document.getElementById('events').innerHTML = events
+          .map(e => `<div>[${e.action}] ${e.user_name} — ${e.content || '-'} (${new Date(e.created_at).toLocaleTimeString()})</div>`)
+          .join('');
+      } catch(err) {
+        console.error("Fetch error:", err);
+      }
+    }
+  
+    setInterval(refresh, 2000);
+    refresh();
+  </script>
+  
+</body>
+</html>
