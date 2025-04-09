@@ -1,3 +1,4 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -42,27 +43,3 @@
 }
 
 
-.user-card.dancing img {
-  animation: wiggle 0.5s ease-in-out infinite;
-}
-
-@keyframes wiggle {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(3deg); }
-  75% { transform: rotate(-3deg); }
-  100% { transform: rotate(0deg); }
-}
-
-
-.comment-bubble {
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #fff;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  white-space: nowrap;
-}

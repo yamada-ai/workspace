@@ -22,8 +22,8 @@ services:
 
   frontend:
     build: ../frontend
-    expose:
-      - "80"
+    ports:
+      - "3000:80"
     depends_on:
       - work-tracker
   
