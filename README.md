@@ -38,4 +38,18 @@ workspace/
 
 ---
 
-## 起動方法
+## 起動方法(Windows + WSL2)
+1. WSL2を構築する
+    - 頑張る
+    - Ubuntu 22.04 LTS
+2. Docker Desktop を入れる
+    - 入れ方
+
+3. GitHub から clone
+    ```sh
+    $ git clone https://github.com/yamada-ai/workspace.git
+    ```
+4. docker compose で立ち上げ
+    ```sh
+    $ docker compose -f infrastructure/compose.yml up --build
+    ```

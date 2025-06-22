@@ -38,6 +38,7 @@ services:
     depends_on:
       - frontend
       - work-tracker
+    restart: always
 
   db:
     image: postgres:15
