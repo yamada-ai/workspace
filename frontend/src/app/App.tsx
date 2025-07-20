@@ -19,6 +19,38 @@ export const App = () => {
   useEffect(() => {
     const user = new UserModel(1 as ID<UserModel>, 'raziii_03', 'princess.png', UserState.Idle, Area.Tier1);
     registerUser(user);
+
+    const socket = new WebSocket("wss://localhost/ws");
+
+    socket.onopen = () => {
+      console.log("WebSocket connected");
+    };
+  
+    socket.onmessage = (event) => {
+      const msg = JSON.parse(event.data);
+      console.log("WebSocket message received:", msg);
+  
+      if (msg.type === "session_start") {
+        // 例：ユーザーが動き出す or エモーションを出す
+        const u = getUser(1 as ID<UserModel>);
+        if (!u) return;
+        useUserViewStore.getState().setComment(u.id, `${msg.user_name}が「${msg.work_name}」開始`);
+        updateUser(u.dance());  // 仮のリアクション
+      }
+    };
+  
+    socket.onclose = () => {
+      console.warn("WebSocket closed");
+    };
+  
+    socket.onerror = (err) => {
+      console.error("WebSocket error:", err);
+    };
+  
+    // クリーンアップ
+    return () => {
+      socket.close();
+    };
   }, []);
 
   const user = getUser(1 as ID<UserModel>);
