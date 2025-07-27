@@ -21,6 +21,7 @@ async def post_session(
     )
 
     await ws_manager.broadcast({
+        "id": session.id,
         "type": "session_start",
         "user_name": session.user_name,
         "work_name": session.work_name,
