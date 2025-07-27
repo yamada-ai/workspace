@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useUserStore } from '../infra/cache/useUserStore';
 import { useUserViewStore } from '../infra/cache/UserViewStore';
+import { useSocket } from '../infra/socket/useSocket';
+
 import { UserModel } from '../domain/user/UserModel';
 import { ID } from '../domain/ID';
 import { Direction } from '../domain/user/Direction';
@@ -13,6 +15,7 @@ import { Area } from '../domain/area/Area';
 import { AreaField } from '../ui/components/AreaField';
 
 
+
 export const App = () => {
   const { updateUser, getUser } = useUserStore();
 
@@ -20,38 +23,9 @@ export const App = () => {
     const user = new UserModel(1 as ID<UserModel>, 'raziii_03', 'princess.png', UserState.Idle, Area.Tier1);
     registerUser(user);
 
-    const socket = new WebSocket("wss://localhost/ws");
-
-    socket.onopen = () => {
-      console.log("WebSocket connected");
-    };
-  
-    socket.onmessage = (event) => {
-      const msg = JSON.parse(event.data);
-      console.log("WebSocket message received:", msg);
-  
-      if (msg.type === "session_start") {
-        // 例：ユーザーが動き出す or エモーションを出す
-        const u = getUser(1 as ID<UserModel>);
-        if (!u) return;
-        useUserViewStore.getState().setComment(u.id, `${msg.user_name}が「${msg.work_name}」開始`);
-        updateUser(u.dance());  // 仮のリアクション
-      }
-    };
-  
-    socket.onclose = () => {
-      console.warn("WebSocket closed");
-    };
-  
-    socket.onerror = (err) => {
-      console.error("WebSocket error:", err);
-    };
-  
-    // クリーンアップ
-    return () => {
-      socket.close();
-    };
   }, []);
+
+  useSocket();
 
   const user = getUser(1 as ID<UserModel>);
   if (!user) return <p>Loading...</p>;
