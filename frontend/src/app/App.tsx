@@ -12,6 +12,7 @@ import { moveUser } from './MoveUser';
 
 import './App.css';
 import { Area } from '../domain/area/Area';
+import { useAutoWalker } from '../viewmodel/useAutoWalker';
 import { AreaField } from '../ui/components/AreaField';
 
 
@@ -26,6 +27,7 @@ export const App = () => {
   }, []);
 
   useSocket();
+  useAutoWalker();
 
   const user = getUser(1 as ID<UserModel>);
   if (!user) return <p>Loading...</p>;
