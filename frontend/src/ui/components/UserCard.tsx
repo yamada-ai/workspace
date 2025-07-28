@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-
+import { ellipsis } from '../../domain/utils/string'; 
 import { UserModel } from '../../domain/user/UserModel';
 import { useUserViewStore } from '../../infra/cache/UserViewStore';
 import { Sprite } from '../../viewmodel/Sprite';
@@ -16,11 +16,13 @@ export const UserCard = ({ user }: Props) => {
   const view = useUserViewStore((s) => s.getView(user.id));
   const clearExpired = useUserViewStore((s) => s.clearExpiredComments);
 
+  // コメントの期限クリア
   useEffect(() => {
     const timer = setInterval(clearExpired, 1000);
     return () => clearInterval(timer);
   }, [clearExpired]);
 
+  // 初期位置がなければエリア内ランダム配置
   useEffect(() => {
     if (view && !view.position) {
       const pos = getRandomPositionInArea(user.area);
@@ -32,15 +34,14 @@ export const UserCard = ({ user }: Props) => {
   const { x, y } = view.position;
 
   return (
-    <div className="relative w-full h-full pointer-events-none">
-      {/* 💬 コメント */}
+    <>
+      {/* 💬 コメントバブル */}
       {view.comment && (
         <div
-          className="absolute z-20"
+          className="absolute z-20 pointer-events-none"
           style={{
-            left: `${x}px`,
-            top: `${y - 24}px`,
-            width: 'auto',
+            left: x,
+            top: y - 24,
             maxWidth: '120px',
           }}
         >
@@ -48,12 +49,12 @@ export const UserCard = ({ user }: Props) => {
         </div>
       )}
 
-      {/* 🃏 カード（スプライト＋情報） */}
+      {/* 🃏 スプライト＋情報カード */}
       <div
-        className="absolute flex items-center space-x-2 bg-white bg-opacity-90 p-1 rounded-lg shadow-md z-10"
+        className="absolute flex items-center space-x-2 bg-white bg-opacity-90 p-1 rounded-lg shadow-md z-10 pointer-events-none max-w-max"
         style={{
-          left: `${x + 12}px`,   // スプライト右横に少しオフセット
-          top:  `${y}px`,
+          left: x + 12, // スプライト右横
+          top: y,
         }}
       >
         {/* スプライト */}
@@ -63,14 +64,13 @@ export const UserCard = ({ user }: Props) => {
             isWalking={user.state === UserState.Walking}
           />
         </div>
+
         {/* ユーザー情報 */}
-        <div className="text-sm text-gray-800">
-          <p className="font-medium truncate" style={{ maxWidth: '80px' }}>
-            {user.name}
-          </p>
-          <p className="text-xs">{user.work_name}</p>
+        <div className="text-sm text-gray-800 whitespace-nowrap">
+          <p className="font-medium">{ellipsis(user.name)}</p>
+          <p className="text-xs">{ellipsis(user.work_name ?? '')}</p>
         </div>
       </div>
-    </div>
+    </>
   );
 };

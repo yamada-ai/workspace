@@ -81,7 +81,7 @@ export const getRandomPositionInArea = (
   spriteMargin: number = 50
 ): { x: number; y: number } => {
   const { x: rx, y: ry, width, height } = getAreaRect(area);
-
+  console.log("rect:", getAreaRect(area))
   // スプライトがはみ出さないように、乱数の上限を (領域幅 - マージン) に調整
   const maxX = rx + width  - spriteMargin;
   const maxY = ry + height - spriteMargin;
@@ -93,7 +93,7 @@ export const getRandomPositionInArea = (
   // 乱数生成
   const x = Math.floor(minX + Math.random() * (maxX - minX));
   const y = Math.floor(minY + Math.random() * (maxY - minY));
-
+  console.log("init:", x, y)
   return { x, y };
 };
 

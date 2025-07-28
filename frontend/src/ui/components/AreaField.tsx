@@ -14,14 +14,13 @@ export const AreaField = () => {
   return (
     <div
       className="relative border border-gray-300"
-      style={{ 
-        width: `${fieldWidth}px`,
-        height: `${fieldHeight}px`,
-      }}
+      style={{ width: `${fieldWidth}px`, height: `${fieldHeight}px` }}
     >
       {Object.values(Area).map((area) => {
         const { x, y, width, height } = getAreaRect(area);
         const style = getAreaStyle(area);
+        const usersInArea = getAllUsers().filter((u) => u.area === area);
+
         return (
           <div
             key={area}
@@ -29,11 +28,13 @@ export const AreaField = () => {
             style={{ left: x, top: y, width, height, ...style }}
           >
             <p className="text-xs text-center bg-white">{area}</p>
-            {getAllUsers()
-              .filter((u) => u.area === area)
-              .map((u) => (
+
+            {/* エリア内の相対コンテナは一度だけ */}
+            <div className="relative w-full h-full">
+              {usersInArea.map((u) => (
                 <UserCard key={u.id} user={u} />
               ))}
+            </div>
           </div>
         );
       })}
