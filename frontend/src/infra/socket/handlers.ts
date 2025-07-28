@@ -13,6 +13,7 @@ export function handleSessionStart(msg: SessionStartEvent) {
   const user = new UserModel(
     msg.id as ID<UserModel>,
     msg.user_name,
+    msg.work_name, 
     "princess.png",
     UserState.Idle,
     Area.Tier1

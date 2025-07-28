@@ -29,45 +29,48 @@ export const UserCard = ({ user }: Props) => {
   }, [view, user.area, user.id]);
 
   if (!view) return null;
-
   const { x, y } = view.position;
 
-  console.log(user, x, y)
-
   return (
-    <div className="relative w-full">
-      {/* 💬 コメントは user-card の外で独立 */}
+    <div className="relative w-full h-full pointer-events-none">
+      {/* 💬 コメント */}
       {view.comment && (
         <div
-          className="absolute"
+          className="absolute z-20"
           style={{
             left: `${x}px`,
-            top: `${y - 24}px`, // スプライトの少し上
-            width: '32px',       // スプライト幅と合わせる
-            height: '20px',      // 高さは任意で調整
+            top: `${y - 24}px`,
+            width: 'auto',
+            maxWidth: '120px',
           }}
         >
           <CommentBubble comment={view.comment} />
         </div>
       )}
 
-      {/* 🕺 スプライト */}
+      {/* 🃏 カード（スプライト＋情報） */}
       <div
-        className={`absolute w-8 h-8 ${user.state === 'Dancing' ? 'animate-wiggle' : ''}`}
-        style={{ left: `${x}px`, top: `${y}px` }}
+        className="absolute flex items-center space-x-2 bg-white bg-opacity-90 p-1 rounded-lg shadow-md z-10"
+        style={{
+          left: `${x + 12}px`,   // スプライト右横に少しオフセット
+          top:  `${y}px`,
+        }}
       >
-        <Sprite direction={view.direction ?? Direction.Down} isWalking={user.state === UserState.Walking} />
-      </div>
-
-      {/* 👤 名前 + 状態 */}
-      <div
-        className="absolute w-16 text-center text-sm"
-        style={{ left: `${x - 8}px`, top: `${y + 40}px` }}
-      >
-        <p>{user.name}</p>
-        <p>Status: {user.state}</p>
+        {/* スプライト */}
+        <div className={`w-8 h-8 ${user.state === UserState.Dancing ? 'animate-wiggle' : ''}`}>
+          <Sprite
+            direction={view.direction ?? Direction.Down}
+            isWalking={user.state === UserState.Walking}
+          />
+        </div>
+        {/* ユーザー情報 */}
+        <div className="text-sm text-gray-800">
+          <p className="font-medium truncate" style={{ maxWidth: '80px' }}>
+            {user.name}
+          </p>
+          <p className="text-xs">{user.work_name}</p>
+        </div>
       </div>
     </div>
   );
 };
-

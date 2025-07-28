@@ -21,7 +21,7 @@ export const App = () => {
   const { updateUser, getUser } = useUserStore();
 
   useEffect(() => {
-    const user = new UserModel(1 as ID<UserModel>, 'raziii_03', 'princess.png', UserState.Idle, Area.Tier1);
+    const user = new UserModel(1 as ID<UserModel>, 'raziii_03', '作業', 'princess.png', UserState.Idle, Area.Tier1);
     registerUser(user);
 
   }, []);

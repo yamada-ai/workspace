@@ -6,6 +6,7 @@ export class UserModel {
   constructor(
     public readonly id: ID<UserModel>,
     public name: string,
+    public work_name: string | null,
     public icon: string,
     public state: UserState = UserState.Idle,
     public area: Area = Area.Tier3
@@ -15,6 +16,7 @@ export class UserModel {
     return new UserModel(
       this.id,
       update.name ?? this.name,
+      update.work_name ?? this.work_name,
       update.icon ?? this.icon,
       update.state ?? this.state,
       update.area ?? this.area
