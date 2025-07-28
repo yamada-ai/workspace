@@ -1,3 +1,4 @@
+import { isInArea } from "../domain/area/Area";
 import { ID } from "../domain/ID";
 import { Direction } from "../domain/user/Direction";
 import { UserModel } from "../domain/user/UserModel";
@@ -19,6 +20,11 @@ export const moveUser = (id: ID<UserModel>) => {
   const delta = directionToDelta[view.direction];
   const newX = view.position.x + delta.dx;
   const newY = view.position.y + delta.dy;
+
+  if (!isInArea(newX, newY, user.area)) {
+    // はみ出すならキャンセル
+    return;
+  }
 
   useUserViewStore.getState().setPosition(id, newX, newY);
 };

@@ -14,7 +14,10 @@ export const AreaField = () => {
   return (
     <div
       className="relative border border-gray-300"
-      style={{ width: `${fieldWidth}px`, height: `${fieldHeight}px` }}
+      style={{ 
+        width: `${fieldWidth}px`,
+        height: `${fieldHeight}px`,
+      }}
     >
       {Object.values(Area).map((area) => {
         const { x, y, width, height } = getAreaRect(area);
