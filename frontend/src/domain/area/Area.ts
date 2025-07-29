@@ -45,9 +45,9 @@ export const getAreaStyle = (area: Area): React.CSSProperties => {
 };
 
 /**
- * (x,y) をスプライト左上としたとき、
- * spriteMargin×spriteMargin のスプライトが
- * 完全に area の中に収まるか判定する
+ * (x, y) は「エリア左上を (0,0) とした相対座標」
+ * spriteMargin × spriteMargin のスプライトが
+ * 完全に area 内に収まるか返す
  */
 export const isInArea = (
   x: number,
@@ -55,46 +55,38 @@ export const isInArea = (
   area: Area,
   spriteMargin: number = 50
 ): boolean => {
-  const rect: AreaRect = getAreaRect(area);
-  // 左上が左端／上端より下かつ
-  // 右下 (x+margin, y+margin) が右端／下端より上か
+  const { width, height } = getAreaRect(area);
   return (
-    x >= rect.x &&
-    y >= rect.y &&
-    x + spriteMargin <= rect.x + rect.width &&
-    y + spriteMargin <= rect.y + rect.height
+    x >= 0 &&
+    y >= 0 &&
+    x + spriteMargin <= width &&
+    y + spriteMargin <= height
   );
 };
 
 export const getAreaByPosition = (x: number, y: number): Area | null => {
-  return (Object.entries(areaMap) as [Area, AreaMeta][])  // ✅ ここを修正！
+  return (Object.entries(areaMap) as [Area, AreaMeta][])
     .find(([area, _]) => isInArea(x, y, area))?.[0] ?? null;
 };
 
 
-/**
- * area 内に spriteMargin×spriteMargin のスプライトが
- * 完全に収まる乱数位置を返す
+/** 
+ * area 内に spriteMargin(=50)のマージンを見て
+ * 相対座標でランダム位置を返す (0 <= x <= width - margin)
  */
 export const getRandomPositionInArea = (
   area: Area,
   spriteMargin: number = 50
 ): { x: number; y: number } => {
-  const { x: rx, y: ry, width, height } = getAreaRect(area);
-  console.log("rect:", getAreaRect(area))
-  // スプライトがはみ出さないように、乱数の上限を (領域幅 - マージン) に調整
-  const maxX = rx + width  - spriteMargin;
-  const maxY = ry + height - spriteMargin;
+  const { width, height } = getAreaRect(area);
 
-  // min は領域の左上（rx, ry）
-  const minX = rx;
-  const minY = ry;
+  const maxX = width  - spriteMargin;
+  const maxY = height - spriteMargin;
 
-  // 乱数生成
-  const x = Math.floor(minX + Math.random() * (maxX - minX));
-  const y = Math.floor(minY + Math.random() * (maxY - minY));
-  console.log("init:", x, y)
-  return { x, y };
+  return {
+    x: Math.floor(Math.random() * maxX),  // すでに相対
+    y: Math.floor(Math.random() * maxY),
+  };
 };
 
 // 📐 全体フィールドの最大サイズ（自動算出）
