@@ -9,7 +9,7 @@ class SessionCreate(BaseModel):
 
 class SessionRead(BaseModel):
     id: int
-    user_name: str
+    user_id: int
     work_name: Optional[str]
     start_time: datetime
     planned_end: datetime
