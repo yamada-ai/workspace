@@ -6,6 +6,7 @@ import os
 from app.db.init_db import init_db
 from app.socket.socket import ws_manager
 from app.controller.session_controller import router as session_controller  
+from app.controller.user_controller import router as user_controller
 
 app = FastAPI(
     title="Work Tracker MVP",
@@ -30,6 +31,7 @@ async def websocket_endpoint(websocket: WebSocket):
         await ws_manager.disconnect(websocket)
         
 app.include_router(session_controller)
+app.include_router(user_controller)
 
 if __name__ == "__main__":
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
