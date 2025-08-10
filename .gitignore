@@ -61,3 +61,5 @@ pytest_cache/
 
 
 infrastructure/certs/*.pem
+
+memo.md
