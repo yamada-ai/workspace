@@ -5,6 +5,7 @@ WORKDIR /workspace
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY src/ ./src
+COPY app/ ./app
 
-CMD ["python", "-u", "src/main.py"]
+ENV PYTHONPATH=/workspace/services/twitch-bot
+CMD ["python", "-m", "app.main"]

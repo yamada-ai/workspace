@@ -9,6 +9,8 @@ from twitchAPI.helper import first
 from twitchAPI.eventsub.websocket import EventSubWebsocket
 from twitchAPI.type import AuthScope
 
+from app.commands.in_command import handle_in_command
+
 load_dotenv()
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 log = logging.getLogger("bot")
@@ -79,6 +81,9 @@ async def main():
             except httpx.HTTPStatusError as e:
                 # 401/403 の場合はスコープ不足か bot/mod 条件未達（channel:bot 付与 or モデレーター化）
                 log.exception(f"send_chat failed: {e.response.text}")
+        
+        if msg.startswith("!in"):
+            await handle_in_command(user_name, msg)
 
     await es.listen_channel_chat_message(
         broadcaster_user_id=broadcaster_id,
