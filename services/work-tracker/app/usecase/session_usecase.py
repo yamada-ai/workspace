@@ -39,7 +39,7 @@ def create_session(
         planned_end=planned_end
     )
 
-    return session_repository.add(new_session)
+    return session_repository.add(new_session), user
 
 def list_sessions(repository: SessionRepository, limit: int = 100) -> List[Session]:
     return repository.list(limit=limit)

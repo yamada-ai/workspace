@@ -17,7 +17,7 @@ async def post_session(
 ):
     session_repository = SessionRepositoryImpl(db)
     user_repository = UserRepositoryImpl(db)
-    session = create_session(
+    session, user = create_session(
         session_repository=session_repository,
         user_repository=user_repository,
         user_name=session_in.user_name,
@@ -28,7 +28,7 @@ async def post_session(
     await ws_manager.broadcast({
         "id": session.id,
         "type": "session_start",
-        "user_id": session.user_id,
+        "user_name": user.name,
         "work_name": session.work_name,
         "start_time": session.start_time.isoformat(),
         "planned_end": session.planned_end.isoformat()
