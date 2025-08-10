@@ -41,7 +41,7 @@ export const UserCard = ({ user }: Props) => {
       {/* コメントバブル(必要なら 0, -24 などでオフセット) */}
       {view.comment && (
         <div style={{ position: 'absolute', left: 0, top: -24, maxWidth: 120 }}>
-          <CommentBubble comment={ellipsis(view.comment, 10)} />
+          <CommentBubble comment={ellipsis(view.comment, 25)} />
         </div>
       )}
 
@@ -61,8 +61,8 @@ export const UserCard = ({ user }: Props) => {
           />
         </div>
         <div className="text-sm text-gray-800 whitespace-nowrap">
-          <p className="font-medium">{ellipsis(user.name, 5)}</p>
-          <p className="text-xs">{ellipsis(user.work_name ?? '', 5)}</p>
+          <p className="font-medium">{ellipsis(user.name, 20)}</p>
+          <p className="text-xs">{ellipsis(user.work_name ?? '', 20)}</p>
         </div>
       </div>
     </div>
